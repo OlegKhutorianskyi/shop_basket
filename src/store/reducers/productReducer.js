@@ -3,6 +3,7 @@ const PRODUCTS_LOAD = 'PRODUCTS_LOAD';
 
 const PRODUCT_SEARCH_FILTER = 'PRODUCT_SEARCH_FILTER';
 const PRODUCTS_RESET_FILTER = 'PRODUCTS_RESET_FILTER';
+const PRODUCTS_SORT = 'PRODUCTS_SORT';
 
 
 const products =[
@@ -41,6 +42,7 @@ export const addProductAction = (title, price, discount) => {
 export const productsLoadAction = (payload) => ({type: PRODUCTS_LOAD, payload});
 export const productsSearchFilterAction = (payload) => ({type: PRODUCT_SEARCH_FILTER, payload});
 export const productsResetFilterAction = (payload) => ({type: PRODUCTS_RESET_FILTER, payload});
+export const productsSortAction = (payload) => ({type: PRODUCTS_SORT, payload});
 
 
 export const productReducer = (state = products, action) =>{
@@ -55,6 +57,9 @@ export const productReducer = (state = products, action) =>{
          }));
      }else if(action.type === PRODUCTS_RESET_FILTER){
         return state.map(item => ({...item, show: true}));
+    }else if(action.type === PRODUCTS_SORT){
+        const direction = action.payload === 'desc' ? -1 : 1;
+        return [...state].sort((a, b) => (a.price - b.price) * direction);
     }
     return state
 }
